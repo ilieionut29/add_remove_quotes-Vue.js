@@ -1,28 +1,50 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <app-quotes-number :quoteCount="quotes.length" :maxQuotes="maxQuotes"></app-quotes-number>
+    <app-new-quote @quoteAdded="newQuote"></app-new-quote>
+    <app-quote-grid :quotes="quotes" @deleteQuote="deleteQuote1"></app-quote-grid>
+    <div class="row">
+      <div class="div col-sm-12 text-center">
+        <div class="alert alert-info">Information: Click on a "Quote" to delete it!</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import QuoteGrid from './components/QuoteGrid.vue';
+  import NewQuote from './components/NewQuote.vue';
+  import QuotesNumber from './components/QuotesNumber';
+
 
 export default {
-  name: 'App',
+  data: function() {
+    return {
+      quotes: [],
+      maxQuotes: 10,
+    }
+  },
+  methods: {
+    newQuote(quote) {
+      if (this.quotes.length >= this.maxQuotes) {
+        return alert("Please delete one Quotes first!")
+      }
+      this.quotes.push(quote)
+    },
+    deleteQuote1(index) {
+      this.quotes.splice(index, 1);
+    }
+  },
   components: {
-    HelloWorld
+    appQuoteGrid: QuoteGrid,
+    appNewQuote: NewQuote,
+    appQuotesNumber: QuotesNumber
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.alert-info {
+  margin-top: 10px;
 }
 </style>
